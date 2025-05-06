@@ -51,6 +51,8 @@ func main() {
 
 	if cfg.Debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	} else {
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
 	// Open sqlite3 database
