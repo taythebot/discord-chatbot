@@ -92,7 +92,7 @@ func (r *Registry) MessageCreate(s *discordgo.Session, m *discordgo.MessageCreat
 		Str("user", m.Author.ID).
 		Logger()
 
-	logger.Debug().Msgf("Processing message '%s'", m.ID)
+	logger.Info().Msgf("Processing message '%s'", m.ID)
 
 	// Check if from blacklisted user
 	blacklistExists, err := r.DB.Blacklist.
