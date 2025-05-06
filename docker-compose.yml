@@ -1,0 +1,11 @@
+services:
+  bot:
+    build:
+      context: .
+    container_name: bot
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    volumes:
+      - ./database.sqlite3:/app/database.sqlite3
+      - ./models.yaml:/app/models.yaml
