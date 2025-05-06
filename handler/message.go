@@ -35,10 +35,13 @@ func messageErrorHandler(err error, s *discordgo.Session, m *discordgo.MessageCr
 // Function to split a message into chunks of a specified size, considering new lines
 func splitMessage(message string, maxLength int) []string {
 	var chunks []string
+
 	for len(message) > maxLength {
 		// Find the last newline or space within the maxLength limit
-		lastNewline := strings.LastIndex(message[:maxLength], "\n")
-		lastSpace := strings.LastIndex(message[:maxLength], " ")
+		var (
+			lastNewline = strings.LastIndex(message[:maxLength], "\n")
+			lastSpace   = strings.LastIndex(message[:maxLength], " ")
+		)
 
 		// Choose the best split point: prefer newline over space
 		splitPoint := lastNewline
@@ -53,7 +56,9 @@ func splitMessage(message string, maxLength int) []string {
 		chunks = append(chunks, message[:splitPoint])
 		message = message[splitPoint:]
 	}
+
 	chunks = append(chunks, message) // Add the remaining part
+
 	return chunks
 }
 
@@ -190,8 +195,7 @@ func (r *Registry) MessageCreate(s *discordgo.Session, m *discordgo.MessageCreat
 
 	if len(reply) > 2000 {
 		// Split the reply into chunks
-		chunks := splitMessage(reply, 2000)
-		for _, chunk := range chunks {
+		for _, chunk := range splitMessage(reply, 2000) {
 			if _, err := s.ChannelMessageSendReply(m.ChannelID, chunk, m.Reference()); err != nil {
 				messageErrorHandler(fmt.Errorf("failed to send message: %w", err), s, m, logger)
 				return
