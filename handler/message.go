@@ -129,6 +129,11 @@ func (r *Registry) MessageCreate(s *discordgo.Session, m *discordgo.MessageCreat
 		return
 	}
 
+	// Send typing presence
+	if err := s.ChannelTyping(m.ChannelID); err != nil {
+		logger.Error().Err(err).Msg("Failed to send channel typing presence")
+	}
+
 	// Get all chats
 	messages, err := r.DB.Message.
 		Query().
