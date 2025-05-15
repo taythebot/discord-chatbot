@@ -28,7 +28,7 @@ func NewClient(token string) *Client {
 			Transport: &http.Transport{
 				MaxIdleConnsPerHost: 20,
 			},
-			Timeout: 60 * time.Second,
+			Timeout: 120 * time.Second,
 		},
 	}
 }
